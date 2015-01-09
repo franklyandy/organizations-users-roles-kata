@@ -1,7 +1,7 @@
-Ruby Testing Template
+Organizations - Users - Roles Kata
 ===================
 
-A ruby project template for testing.
+An implementation of the [Organizations - Users - Roles Kata] (http://www.adomokos.com/2012/10/the-organizations-users-roles-kata.html)
 
 ### Getting Started
 
