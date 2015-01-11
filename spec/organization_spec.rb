@@ -4,6 +4,15 @@ describe Organization do
 
   Given(:subject) { described_class.new }
 
+  describe 'initialize' do
+
+    context 'default parent is root' do
+      Then { !subject.parent.nil? }
+      And { subject.parent.is_root? }
+    end
+
+  end
+
   describe '#depth=' do
     When(:result) { subject.depth = depth_to_set }
 

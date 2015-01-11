@@ -6,6 +6,10 @@ class Organization
   attr_accessor :depth
   attr_accessor :parent
 
+  def initialize(parent = Organization.new(nil))
+    @parent = parent
+  end
+
   def depth=(depth)
     return @depth = depth if depth.between?(MIN_DEPTH, MAX_DEPTH)
     raise ArgumentError, "depth must be between #{MIN_DEPTH} and #{MAX_DEPTH}"
@@ -13,6 +17,10 @@ class Organization
 
   def is_child_organization?
     self.depth == MAX_DEPTH
+  end
+
+  def is_root?
+    self.parent.nil?
   end
 
   def parent=(parent)
