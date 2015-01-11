@@ -18,7 +18,7 @@ describe Organization do
 
   describe '#depth' do
     context 'root' do
-      Given(:subject) { Organization.new nil }
+      Given(:subject) { Organization.new(nil) }
       Then { subject.depth == 0 }
     end
 
