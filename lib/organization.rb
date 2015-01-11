@@ -1,6 +1,4 @@
 class Organization
-  MAX_DEPTH = 2
-
   attr_accessor :parent
 
   def initialize(parent = Organization.new(nil))
@@ -14,7 +12,7 @@ class Organization
   end
 
   def is_child?
-    self.depth == MAX_DEPTH
+    self.depth == 2
   end
 
   def is_root?
