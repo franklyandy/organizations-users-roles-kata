@@ -3,16 +3,15 @@ class Organization
   MAX_DEPTH = 2
   ROOT = MIN_DEPTH
 
-  attr_accessor :depth
   attr_accessor :parent
 
   def initialize(parent = Organization.new(nil))
-    @parent = parent
+    @is_root = parent.nil?
+    self.parent = parent
   end
 
-  def depth=(depth)
-    return @depth = depth if depth.between?(MIN_DEPTH, MAX_DEPTH)
-    raise ArgumentError, "depth must be between #{MIN_DEPTH} and #{MAX_DEPTH}"
+  def depth
+    return 0 if self.is_root?
   end
 
   def is_child_organization?
@@ -20,14 +19,14 @@ class Organization
   end
 
   def is_root?
-    self.parent.nil?
+    @is_root
   end
 
   def parent=(parent)
-    if parent.is_child_organization?
-      raise ArgumentError, "a child organization cannot be a parent"
-    elsif is_root_organization?
+    if self.is_root? && !parent.nil?
       raise ArgumentError, "root organization cannot have a parent"
+    elsif !parent.nil? && parent.is_child_organization?
+      raise ArgumentError, "a child organization cannot be a parent"
     end
     @parent = parent
   end
