@@ -11,9 +11,17 @@ class Organization
     raise ArgumentError, "depth must be between #{MIN_DEPTH} and #{MAX_DEPTH}"
   end
 
+  def is_child_organization?
+    self.depth == MAX_DEPTH
+  end
+
   def parent=(parent)
-    return @parent = parent unless is_root_organization?
-    raise ArgumentError, "root organization cannot have a parent"
+    if parent.is_child_organization?
+      raise ArgumentError, "a child organization cannot be a parent"
+    elsif is_root_organization?
+      raise ArgumentError, "root organization cannot have a parent"
+    end
+    @parent = parent
   end
 
   private

@@ -35,10 +35,16 @@ describe Organization do
 
   end
 
+  describe '#is_child_organization?' do
+    Given { subject.depth = Organization::MAX_DEPTH }
+    When(:result) { subject.is_child_organization? }
+    Then { result }
+  end
+
   describe '#parent' do
-    Given(:parent_to_set) { Organization.new }
+    Given(:parent) { Organization.new }
     Given { subject.depth = depth_to_set }
-    When(:result) { subject.parent = parent_to_set }
+    When(:result) { subject.parent = parent }
 
     context 'cannot be set if the organization is the root organization' do
       Given(:depth_to_set) { Organization::ROOT }
@@ -52,7 +58,29 @@ describe Organization do
       valid_depths = (Organization::ROOT + 1..Organization::MAX_DEPTH)
       valid_depths.each do |depth|
         Given(:depth_to_set) { depth }
-        Then { subject.parent == parent_to_set }
+
+        context 'and the parent is' do
+          Invariant { subject.parent == parent }
+
+          context 'the root organization' do
+            Given { parent.depth = Organization::ROOT }
+            Then { invariants_are_satisfied? }
+          end
+
+          context 'is a regular organization' do
+            Given { parent.depth = Organization::MAX_DEPTH - 1 }
+            Then { invariants_are_satisfied? }
+          end
+        end
+
+        context 'and the parent is not a child organization' do
+          Given { parent.depth = Organization::MAX_DEPTH }
+          Then {
+            result ==
+              Failure(ArgumentError, /a child organization cannot be a parent/)
+          }
+        end
+
       end
     end
 
