@@ -32,4 +32,15 @@ describe Organization do
 
   end
 
+  describe '#parent' do
+    context 'cannot be set if the organization is the root organization' do
+      Given { subject.depth = Organization::ROOT }
+      When(:result) { subject.parent = Organization.new }
+      Then {
+        result ==
+          Failure(ArgumentError, /root organization cannot have a parent/)
+      }
+    end
+  end
+
 end
