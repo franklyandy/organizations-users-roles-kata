@@ -36,14 +36,26 @@ describe Organization do
   end
 
   describe '#parent' do
+    Given(:parent_to_set) { Organization.new }
+    Given { subject.depth = depth_to_set }
+    When(:result) { subject.parent = parent_to_set }
+
     context 'cannot be set if the organization is the root organization' do
-      Given { subject.depth = Organization::ROOT }
-      When(:result) { subject.parent = Organization.new }
+      Given(:depth_to_set) { Organization::ROOT }
       Then {
         result ==
           Failure(ArgumentError, /root organization cannot have a parent/)
       }
     end
+
+    context 'can be set if the organization is not a root organization' do
+      valid_depths = (Organization::ROOT + 1..Organization::MAX_DEPTH)
+      valid_depths.each do |depth|
+        Given(:depth_to_set) { depth }
+        Then { subject.parent == parent_to_set }
+      end
+    end
+
   end
 
 end

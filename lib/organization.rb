@@ -12,6 +12,14 @@ class Organization
   end
 
   def parent=(parent)
+    return @parent = parent unless is_root_organization?
     raise ArgumentError, "root organization cannot have a parent"
   end
+
+  private
+
+    def is_root_organization?
+      self.depth == ROOT
+    end
+
 end
