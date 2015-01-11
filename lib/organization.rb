@@ -12,6 +12,7 @@ class Organization
 
   def depth
     return 0 if self.is_root?
+    parent.depth + 1
   end
 
   def is_child_organization?
