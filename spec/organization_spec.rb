@@ -3,7 +3,6 @@ require 'organization';
 describe Organization do
 
   describe 'initialize' do
-
     context 'defaults' do
       Then { !subject.parent.nil? }
       And { subject.parent.is_root? }
@@ -15,7 +14,6 @@ describe Organization do
       Then { subject.parent.nil? }
       And { subject.is_root? }
     end
-
   end
 
   describe '#depth' do
@@ -54,7 +52,6 @@ describe Organization do
           Failure(ArgumentError, /a child organization cannot be a parent/)
       }
     end
-
   end
 
   describe '#add_child' do
@@ -82,9 +79,6 @@ describe Organization do
           Failure(ArgumentError, /a child organization cannot be a parent/)
       }
       And { subject.children.empty? }
-    end
-
-    context 'the parent of the child should become the organization adding the child' do
     end
   end
 
