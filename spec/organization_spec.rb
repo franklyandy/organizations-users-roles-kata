@@ -76,6 +76,12 @@ describe Organization do
     end
 
     context 'children cannot be added to a child organization' do
+      Given(:subject) { Organization.new(Organization.new) }
+      Then {
+        result ==
+          Failure(ArgumentError, /a child organization cannot be a parent/)
+      }
+      And { subject.children.empty? }
     end
 
     context 'the parent of the child should become the organization adding the child' do

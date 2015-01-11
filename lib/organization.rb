@@ -9,8 +9,8 @@ class Organization
   end
 
   def add_child(child)
-    @children << child
     child.parent = self
+    @children << child
   end
 
   def depth
