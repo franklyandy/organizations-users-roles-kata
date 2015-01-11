@@ -61,13 +61,18 @@ describe Organization do
     Given(:child) { Organization.new }
     When(:result) { subject.add_child(child) }
 
-    context 'children can be added to the root organization' do
-      Given(:subject) { Organization.new(nil) }
-      Then { !subject.children.empty? }
-      And { child.parent == subject }
-    end
+    context 'children can be added' do
+      Invariant { !subject.children.empty? }
+      Invariant { child.parent == subject }
 
-    context 'children can be added to a regular organization' do
+      context 'to the root organization' do
+        Given(:subject) { Organization.new(nil) }
+        Then { invariants_are_satisfied? }
+      end
+
+      context 'to a regular organization' do
+        Then { invariants_are_satisfied? }
+      end
     end
 
     context 'children cannot be added to a child organization' do
