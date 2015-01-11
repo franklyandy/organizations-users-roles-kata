@@ -1,9 +1,16 @@
 class Organization
+  attr_reader :children
   attr_accessor :parent
 
   def initialize(parent = Organization.new(nil))
     @is_root = parent.nil?
+    @children = []
     self.parent = parent
+  end
+
+  def add_child(child)
+    @children << child
+    child.parent = self
   end
 
   def depth

@@ -4,9 +4,10 @@ describe Organization do
 
   describe 'initialize' do
 
-    context 'default parent is root' do
+    context 'defaults' do
       Then { !subject.parent.nil? }
       And { subject.parent.is_root? }
+      And { subject.children.empty? }
     end
 
     context 'is root if parent is nil' do
@@ -54,6 +55,26 @@ describe Organization do
       }
     end
 
+  end
+
+  describe '#add_child' do
+    Given(:child) { Organization.new }
+    When(:result) { subject.add_child(child) }
+
+    context 'children can be added to the root organization' do
+      Given(:subject) { Organization.new(nil) }
+      Then { !subject.children.empty? }
+      And { child.parent == subject }
+    end
+
+    context 'children can be added to a regular organization' do
+    end
+
+    context 'children cannot be added to a child organization' do
+    end
+
+    context 'the parent of the child should become the organization adding the child' do
+    end
   end
 
 end
