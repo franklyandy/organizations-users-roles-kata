@@ -7,7 +7,7 @@ describe Organization do
   describe '#depth=' do
     When(:result) { subject.depth = depth_to_set }
 
-    valid_depths = [0, 1, 2]
+    valid_depths = (Organization::MIN_DEPTH..Organization::MAX_DEPTH)
     valid_depths.each do |depth|
       context "can be set to #{depth}" do
         Given(:depth_to_set) { depth }
@@ -16,16 +16,19 @@ describe Organization do
     end
 
     context 'cannot be' do
-      Invariant { result == Failure(ArgumentError, /depth must be between 0 and 2/) }
+      Invariant {
+        result == Failure(ArgumentError,
+          /depth must be between #{Organization::MIN_DEPTH} and #{Organization::MAX_DEPTH}/)
+      }
       Invariant { subject.depth.nil? }
 
-      context 'less than 0' do
-        Given(:depth_to_set) { -1 }
+      context "less than #{Organization::MIN_DEPTH}" do
+        Given(:depth_to_set) { Organization::MIN_DEPTH - 1 }
         Then { invariants_are_satisfied? }
       end
 
-      context 'greater than 2' do
-        Given(:depth_to_set) { 3 }
+      context "greater than #{Organization::MAX_DEPTH}" do
+        Given(:depth_to_set) { Organization::MAX_DEPTH + 1 }
         Then { invariants_are_satisfied? }
       end
     end
