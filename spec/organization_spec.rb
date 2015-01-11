@@ -1,6 +1,7 @@
 require 'organization';
 
 describe Organization do
+
   Given(:subject) { described_class.new }
 
   describe '.depth=' do
@@ -14,14 +15,19 @@ describe Organization do
       end
     end
 
-    context 'cannot be less than 0' do
-      Given(:depth_to_set) { -1 }
-      Then { result == Failure(ArgumentError, /depth must be between 0 and 2/) }
-    end
+    context 'cannot be' do
+      Invariant { result == Failure(ArgumentError, /depth must be between 0 and 2/) }
+      Invariant { subject.depth.nil? }
 
-    context 'cannot be greater than 2' do
-      Given(:depth_to_set) { 3 }
-      Then { result == Failure(ArgumentError, /depth must be between 0 and 2/) }
+      context 'less than 0' do
+        Given(:depth_to_set) { -1 }
+        Then { invariants_are_satisfied? }
+      end
+
+      context 'greater than 2' do
+        Given(:depth_to_set) { 3 }
+        Then { invariants_are_satisfied? }
+      end
     end
 
   end
