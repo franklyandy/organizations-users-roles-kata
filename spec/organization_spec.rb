@@ -3,7 +3,7 @@ require 'organization';
 describe Organization do
   Given(:subject) { described_class.new }
 
-  describe '.depth' do
+  describe '.depth=' do
     When(:result) { subject.depth = depth_to_set }
 
     valid_depths = [0, 1, 2]
@@ -16,7 +16,12 @@ describe Organization do
 
     context 'cannot be less than 0' do
       Given(:depth_to_set) { -1 }
-      Then { result == Failure(ArgumentError, /depth can only be 0, 1, or 2/) }
+      Then { result == Failure(ArgumentError, /depth must be between 0 and 2/) }
+    end
+
+    context 'cannot be greater than 2' do
+      Given(:depth_to_set) { 3 }
+      Then { result == Failure(ArgumentError, /depth must be between 0 and 2/) }
     end
 
   end
