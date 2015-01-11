@@ -4,7 +4,7 @@ describe Organization do
 
   Given(:subject) { described_class.new }
 
-  describe '.depth=' do
+  describe '#depth=' do
     When(:result) { subject.depth = depth_to_set }
 
     valid_depths = [0, 1, 2]
